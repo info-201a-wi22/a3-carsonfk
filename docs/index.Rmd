@@ -6,8 +6,10 @@ output: html_document
 ---
 **INFO-201: Technical Foundations of Informatics - The Information School - University of Washington**
 
-**Date:** Winter 2022
-
+```{r, echo=FALSE, include=FALSE}
+setwd("/Users/carso/Desktop/INFO201/a3-carsonfk/")
+source("source/analysis.R")
+```
 ### Introduction
 
 ### Summary
@@ -15,7 +17,6 @@ output: html_document
 ### Chart 1
 
 ```{r plot1, echo=FALSE}
-source("../source/analysis.R")
 plot1
 ```
 
