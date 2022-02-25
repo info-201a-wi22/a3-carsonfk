@@ -8,6 +8,23 @@ library(lintr)
 #data <- read.csv(filename, header = TRUE, stringsAsFactors = FALSE)
 
 incarceration_data <- read.csv("source/incarceration_trends.csv")
+
+#summary_stats
+stats1 <- incarceration_data %>% filter(year == "2018") %>%
+  summarise("ratio" = sum(black_jail_pop, na.rm=TRUE) / sum(black_pop_15to64, na.rm=TRUE),
+            "ratio2" = sum(white_jail_pop, na.rm=TRUE) / sum(white_pop_15to64, na.rm=TRUE))
+
+stats2 <- incarceration_data %>% filter(year == "2018") %>%
+  group_by(state) %>% summarize(mean_bjp = mean(black_jail_pop, na.rm=TRUE),
+                                mean_ljp = mean(latinx_jail_pop, na.rm=TRUE),
+                                mean_wjp = mean(white_jail_pop, na.rm=TRUE))
+
+stats_bjp <- stats2 %>% arrange(desc(mean_bjp)) %>% head(1)
+stats_ljp <-stats2 %>% arrange(desc(mean_ljp)) %>% head(1)
+stats_wjp <- stats2 %>% arrange(desc(mean_wjp)) %>% head(1)
+                                          
+
+#plot1
 temp1 <- incarceration_data
 
 plot1 <- ggplot(temp1 %>% filter(year > 1989), aes(x = year, y = total_jail_pop / total_pop, color = region)) +
@@ -21,7 +38,8 @@ temp_black <- incarceration_data %>% select(year, black_prison_adm) %>%
   rename(adm = black_prison_adm) %>% mutate(race = "Black")
 temp_white <- incarceration_data %>% select(year, white_prison_adm) %>%
   rename(adm = white_prison_adm) %>% mutate(race = "White")
-                              
+  
+#plot2                            
 temp2 <- rbind(temp_black, temp_white)
 
 plot2 <- ggplot(temp2 %>% filter(year > 1982), aes(x = year, y = adm, fill = race )) +
@@ -31,7 +49,7 @@ plot2 <- ggplot(temp2 %>% filter(year > 1982), aes(x = year, y = adm, fill = rac
        y = "Admissions",
        fill = "Race")
 
-
+#plot3
 coordinate_data <- read.csv("source/coordinates.csv")
 coordinate_data <- rename(coordinate_data, "state" = "ï..state")
 
@@ -54,7 +72,7 @@ plot3 <- leaflet(data = temp3) %>%
   ) %>%
   addLegend(
     position = "bottomright",
-    title = "U.S. Regions of High ICE-related Incarcerations",
+    title = "U.S. Regions of High ICE-related Incarcerations as of 2018",
     pal = palette_fn,
     values = ~region,
     opacity = 100

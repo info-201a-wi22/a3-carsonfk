@@ -12,7 +12,18 @@ source("source/analysis.R")
 ```
 ### Introduction
 
+The U.S. has long struggled with issues relating to racism, both in the past and today. With this data set, I believe there is an opportunity for a deeper dive into how racism connects to the jail/prison system in the U.S. To achieve this, I decided to focus my analysis around a few key variables:
+1. Race
+2. Region of the U.S.
+3. Jail Populations
+4. Prison Admissions
+5. ICE Incarcerations
+
+I feel that these variables are sufficient to give a good level of insight into some of the important concepts surrounding how racism is perpetuated in the U.S. Specifically, they can combine to tell us about how geography and race are intertwined with how the U.S. jail/prison system operates.
+
 ### Summary
+
+To condense some of the larger ideas of this report, I calculated some summary statistics. Firstly, I calculated two ratios: one between the total population of White people and the population of incarcerated White people, and the other between the total population of Black people and the population of incarcerated Black people. The first equals `r stats1[1]` and the second equals `r stats1[2]`, which themselves represent a ratio of `r stats1[1] / stats1[2]`, which puts into perspective how much of a greater chance black people have of being incarcerated than Whites do. Secondly, I calculated statistics about which U.S. states have the highest average jail population for Black people, Latino people, and White people. For Black people, the highest average incarceration population is `r stats_bjp[2]` in Washington D.C. For Latino people, the highest average incarceration population is `r stats_ljp[3]` in California. For White people, the highest average incarceration rate is `r stats_wjp[4]` in Arizona. These relate to important ideas that will be revisited later in the report.
 
 ### Chart 1
 
@@ -20,15 +31,20 @@ source("source/analysis.R")
 plot1
 ```
 
+I included this chart to show how trends of incarceration can be mapped geographically over time to show in which regions the most people tend to be put in jail and prison. Specifically, the pattern of a greater number of incarcerations occurring in the Southern region of the U.S. is easily visible. This can mainly be attributed to the higher numbers of minority populations living in this region, such as higher Latino and Black populations, which are often targeted and over-policed, leading to these higher overall incarceration numbers in this region (and to a lesser extent the Western region).
+
 ### Chart 2
 
 ```{r plot2, echo=FALSE}
 plot2
 ```
 
+This chart compares two continuous variables: Black prison admissions and White prison admissions. I thought that this visualization was the most clear of any of the visuals I created, as instantly show the viewer how large the gab is between White people and Black people when it comes to the prison system. During many years throughout this graph, the number of Black people admitted to a prison is more than triple or quadruple that of Whites admitted that same year, which makes it plain to see that the prison system unfairly targets minority populations far more than whites, no matter where in the U.S. you go.
 
 ### Map
 
 ```{r plot3, echo=FALSE}
 plot3
 ```
+
+I think this map is an expansion upon the first chart I included. It conveys a similar key idea, but does so in a way - and with different data - that conveys the real world scope of the issue, rather than answering the same questions as before. The bubbles shown on this map represent ICE-related incarcerations within each state, and it can clearly be seen which states have the most. Texas, Georgia, and Florida in the South, along with California in the West, and to a lesser extent, New Jersey and New York, represent areas with large amounts of immigration from Latin American countries (some legal and some illegal). Because of this, ICE are particularly active in these states, as they know many people immigrating have no other (realistic) choice but to immigrate illegally, which helps to show how racial disparities can often be intentionally perpetuated to the benefit of those running the prison system.
