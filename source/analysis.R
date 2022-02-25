@@ -1,25 +1,21 @@
 library(dplyr)
 library(tidyr)
-library(ggplot2) 
+library(ggplot2)
+library(leaflet)
+library(lintr)
 
 #filename <- "https://raw.githubusercontent.com/vera-institute/incarceration-trends/master/incarceration_trends.csv"
 #data <- read.csv(filename, header = TRUE, stringsAsFactors = FALSE)
 
 incarceration_data <- read.csv("source/incarceration_trends.csv")
-incarceration_mutate <- incarceration_data %>% mutate(county_state = paste(county_name, state, sep=", "))
+temp1 <- incarceration_data
 
-highest_proportions <- incarceration_mutate %>% group_by(county_state, region) %>%
-  summarize(prop_incarcerated = sum(total_jail_pop * 100)/sum(total_pop)) %>%
-  arrange(desc(prop_incarcerated)) %>% head(10)
-
-temp1 <- incarceration_mutate %>% filter(county_state %in% highest_proportions$county_state)
-
-plot1 <- ggplot(temp1 %>% filter(year > 1989), aes(x = year, y = total_jail_pop * 100, color = county_state)) +
-  geom_smooth(formula = "y ~ x") +
-  labs(title = "U.S. Counties with Highest Overall Incarceration Rates measured from 1990 to 2018",
+plot1 <- ggplot(temp1 %>% filter(year > 1989), aes(x = year, y = total_jail_pop / total_pop, color = region)) +
+  geom_smooth() +
+  labs(title = "U.S. Regions with Highest Overall Incarceration Rates measured from 1990 to 2018",
        x = "Year",
        y = "Incarcerated Population",
-       color = "County")
+       color = "Region")
 
 temp_black <- incarceration_data %>% select(year, black_prison_adm) %>%
   rename(adm = black_prison_adm) %>% mutate(race = "Black")
@@ -34,9 +30,32 @@ plot2 <- ggplot(temp2 %>% filter(year > 1982), aes(x = year, y = adm, fill = rac
        x = "Year",
        y = "Admissions",
        fill = "Race")
-  
 
-#temp3 <- data %>% group_by(year) %>% summarize("prop_female" = sum(female_pop_15to64) / sum(total_pop_15to64) )
 
-#plot3 <- ggplot(temp3)
+coordinate_data <- read.csv("source/coordinates.csv")
+coordinate_data <- rename(coordinate_data, "state" = "ï..state")
 
+temp3 <- incarceration_data %>% filter(year == "2018") %>% group_by(state, region) %>%
+  summarize("from_ice" = sum(total_jail_from_ice, na.rm=TRUE)) %>%
+  left_join(coordinate_data)
+
+palette_fn <- colorFactor(palette = "Set1", domain = temp3$region)
+
+plot3 <- leaflet(data = temp3) %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  setView(lng = -99.90181, lat = 41.49254, zoom = 4) %>%
+  addCircles(
+    lat = ~latitude,
+    lng = ~longitude,
+    radius = ~from_ice * 200,
+    stroke = FALSE,
+    popup = ~"Represenation of the relative population of ICE inmates by state",
+    color = ~palette_fn(region)
+  ) %>%
+  addLegend(
+    position = "bottomright",
+    title = "U.S. Regions of High ICE-related Incarcerations",
+    pal = palette_fn,
+    values = ~region,
+    opacity = 100
+  )

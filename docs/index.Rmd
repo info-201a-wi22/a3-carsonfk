@@ -28,3 +28,7 @@ plot2
 
 
 ### Map
+
+```{r plot3, echo=FALSE}
+plot3
+```
