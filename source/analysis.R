@@ -16,10 +16,10 @@ temp1 <- incarceration_mutate %>% filter(county_state %in% highest_proportions$c
 
 plot1 <- ggplot(temp1 %>% filter(year > 1989), aes(x = year, y = total_jail_pop * 100, color = county_state)) +
   geom_smooth(formula = "y ~ x") +
-  labs(title = "Incarcerated Populations from 1970 to 2018 by Urbanicity of Facility",
+  labs(title = "U.S. Counties with Highest Overall Incarceration Rates measured from 1990 to 2018",
        x = "Year",
-       y = "Population",
-       color = "Urbanicity")
+       y = "Incarcerated Population",
+       color = "County")
 
 temp_black <- incarceration_data %>% select(year, black_prison_adm) %>%
   rename(adm = black_prison_adm) %>% mutate(race = "Black")
