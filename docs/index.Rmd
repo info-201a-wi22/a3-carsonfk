@@ -21,7 +21,7 @@ The U.S. has long struggled with issues relating to racism, and with this data s
 * Prison Admissions
 * ICE Incarcerations
 
-I feel that these variables are sufficient to give a good level of insight into some of the important concepts surrounding how racism is perpetuated in the U.S. Specifically, they can combine to tell us about how geography and race are intertwined with how the U.S. jail/prison system operates.
+These variables can give a good level of insight into some of the important concepts surrounding how racism is perpetuated in the U.S. Specifically, they can combine to tell us about how geography and race are intertwined with how the U.S. jail/prison system operates.
 
 ### Summary
 
